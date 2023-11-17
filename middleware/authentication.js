@@ -18,6 +18,8 @@ const authentication = (req, res, next) => {
       userProfilePict,
     } = verified;
 
+    // findOne User bahwa user tersebut memang ada dari database
+
     req.user = {
       userId,
       userUsername,

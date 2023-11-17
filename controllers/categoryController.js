@@ -14,23 +14,23 @@ class CategoryController {
     }
   }
 
-  static async getCategoryCourse(req, res, next) {
-    const { CategoryId } = req.params;
-    try {
-      const result = await Course.findAll({
-        where: {
-          CategoryId,
-        },
-      });
+  // static async getCategoryCourse(req, res, next) {
+  //   const { categoryId } = req.params;
+  //   try {
+  //     const result = await Course.findAll({
+  //       where: {
+  //         CategoryId: categoryId,
+  //       },
+  //     });
 
-      res.status(201).json({
-        statusCode: 201,
-        data: result,
-      });
-    } catch (err) {
-      next(err);
-    }
-  }
+  //     res.status(201).json({
+  //       statusCode: 201,
+  //       data: result,
+  //     });
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // }
 }
 
 module.exports = CategoryController;

@@ -3,6 +3,8 @@ const enrollmentsRoute = require("./enrollmentsRoute");
 const courseRoute = require("./courseRoute");
 const chapterRoute = require("./chapterRoute");
 const categoriesRoute = require("./categoriesRoute");
+const transactionRoute = require("./transactionRoute");
+const feedbackRoute = require("./feedbackRoute");
 const LoginController = require("../controllers/loginController");
 const RegisterController = require("../controllers/registerController");
 
@@ -13,5 +15,7 @@ router.use("/enrollments", enrollmentsRoute);
 router.use("/course", courseRoute);
 router.use("/chapter", chapterRoute);
 router.use("/categories", categoriesRoute);
+router.use("/transaction", transactionRoute);
+router.use("/feedback", feedbackRoute);
 
 module.exports = router;

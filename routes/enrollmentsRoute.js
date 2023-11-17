@@ -9,6 +9,10 @@ router.get(
   authentication,
   EnrollmentController.getEnrollmentCourse
 );
-router.patch("/:courseId");
+router.patch(
+  "/:courseId",
+  authentication,
+  EnrollmentController.updateEnrollment
+);
 
 module.exports = router;
