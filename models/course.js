@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       CategoryId: DataTypes.INTEGER,
       isPremium: DataTypes.BOOLEAN,
       imgUrl: DataTypes.STRING,
+      rating: DataTypes.FLOAT,
     },
     {
       sequelize,

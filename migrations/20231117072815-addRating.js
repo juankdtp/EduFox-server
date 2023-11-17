@@ -10,7 +10,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.addColumn("Courses", "rating", {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
       defaultValue: 0,
     });
   },
