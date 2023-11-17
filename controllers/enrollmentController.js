@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Enrollment, Course, Chapter, User } = require("../models/index");
+const enrollment = require("../models/enrollment");
 
 class EnrollmentController {
   static async getAllEnrollment(req, res, next) {
@@ -27,7 +28,8 @@ class EnrollmentController {
         },
         limit: limitPage,
         offset: pageStartPoint,
-        // order: [["name", "ASC"]],
+        include: Course,
+        order: [["createdAt", "DESC"]], // createdAt DESC
       });
       //   const result = await Enrollment.findAll();
 
@@ -60,7 +62,11 @@ class EnrollmentController {
         },
         include: {
           model: Course,
-          include: Chapter,
+          include: {
+            model: Chapter,
+            order: [["chapterNo", "ASC"]],
+            // sort by chapterNo ASC
+          },
         },
       });
 
@@ -77,15 +83,15 @@ class EnrollmentController {
 
   static async addEnrollment(req, res, next) {
     const { courseId } = req.params;
-    const { userId } = req.user;
+    const { userId, userPremium } = req.user;
     try {
-      const checkUser = await User.findByPk(userId);
+      // const checkUser = await User.findByPk(userId); // ini dari auth
       const checkCourse = await Course.findByPk(courseId);
       //   console.log(checkUser, 37);
       //   console.log(checkCourse, 38);
       //   console.log(checkUser.isPremium, 39);
       //   console.log(checkCourse.isPremium, 40);
-      if (checkCourse.isPremium === true && checkUser.isPremium === false) {
+      if (checkCourse.isPremium === true && userPremium === false) {
         throw new Error("USER_NOT_PREMIUM");
       }
       const findEnroll = await Enrollment.findOne({
@@ -128,8 +134,38 @@ class EnrollmentController {
 
   static async updateEnrollment(req, res, next) {
     const { courseId } = req.params;
+    const { status, curChapterId } = req.body;
+    const { userId } = req.user;
     try {
+      const checkEnroll = await Enrollment.findOne({
+        where: {
+          CourseId: courseId,
+          UserId: userId,
+        },
+      });
+
+      if (!checkEnroll) {
+        throw new Error("NO_ENROLLMENT");
+      }
+
+      const result = await Enrollment.update(
+        {
+          status,
+          curChapterId,
+        },
+        {
+          where: {
+            CourseId: courseId,
+          },
+        }
+      );
+
+      res.status(201).json({
+        statusCode: 201,
+        message: `Enrollment with id ${checkEnroll.id} has been updated with status ${status} and curChapterId ${curChapterId}`,
+      });
     } catch (err) {
+      //   console.log(err);
       next(err);
     }
   }

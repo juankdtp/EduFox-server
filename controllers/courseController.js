@@ -3,11 +3,17 @@ const { Course, Chapter } = require("../models/index");
 
 class CourseController {
   static async getAllCourse(req, res, next) {
-    const { page, name } = req.query;
+    const { page, name, categoryId } = req.query;
     let findName = "";
 
-    let limitPage = 4;
+    let limitPage = 8;
     let pageStartPoint = 0;
+
+    const filterOptions = {
+      name: {
+        [Op.iLike]: `%${findName}%`,
+      },
+    };
 
     if (name) {
       findName = name;
@@ -16,13 +22,14 @@ class CourseController {
     if (page) {
       pageStartPoint = limitPage * (page - 1);
     }
+
+    if (categoryId) {
+      filterOptions.CategoryId = categoryId;
+    }
+
     try {
       const result = await Course.findAndCountAll({
-        where: {
-          name: {
-            [Op.iLike]: `%${findName}%`,
-          },
-        },
+        where: filterOptions,
         limit: limitPage,
         offset: pageStartPoint,
         order: [["name", "ASC"]],
@@ -30,8 +37,10 @@ class CourseController {
 
       res.status(200).json({
         statusCode: 200,
+        currentPage: page || 1,
         data: result.rows,
         totalData: result.count,
+        totalPage: Math.ceil(result.count / limitPage),
       });
     } catch (err) {
       next(err);
@@ -39,10 +48,14 @@ class CourseController {
   }
 
   static async getCourseDetails(req, res, next) {
-    const { CourseId } = req.params;
+    const { courseId } = req.params;
     try {
-      const result = await Course.findByPk(CourseId, {
-        include: Chapter,
+      const result = await Course.findByPk(courseId, {
+        include: {
+          model: Chapter,
+          // sort by chapterNo, ASC
+          order: [["chapterNo", "ASC"]],
+        },
       });
       console.log(result);
       res.status(201).json({
