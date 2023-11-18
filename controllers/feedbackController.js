@@ -1,4 +1,4 @@
-const { Feedback, Course } = require("../models/index");
+const { Feedback, Course, User } = require("../models/index");
 
 class FeedbackController {
   static async addFeedback(req, res, next) {
@@ -18,6 +18,11 @@ class FeedbackController {
           CourseId: courseId,
         },
       });
+
+      const user = await User.findByPk(userId);
+      // console.log(user, 23);
+      const userPoint = user.point;
+      console.log(userPoint, 25);
       //   console.log(feedback.count, 21);
       //   console.log(feedback.rows, 22);
       // console.log(course.rows, 23);
@@ -101,6 +106,17 @@ class FeedbackController {
           {
             where: {
               id: courseId,
+            },
+          }
+        );
+
+        const updateUser = await User.update(
+          {
+            point: userPoint + 5,
+          },
+          {
+            where: {
+              id: userId,
             },
           }
         );
