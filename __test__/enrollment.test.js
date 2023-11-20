@@ -48,27 +48,35 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await queryInterface.bulkDelete("Chapters", null, {
-    truncate: { cascade: true },
-    restartIdentity: true,
-  });
+  try {
+    await queryInterface.bulkDelete("Enrollments", null, {
+      truncate: { cascade: true },
+      restartIdentity: true,
+    });
+    await queryInterface.bulkDelete("Chapters", null, {
+      truncate: { cascade: true },
+      restartIdentity: true,
+    });
 
-  await queryInterface.bulkDelete("Courses", null, {
-    truncate: { cascade: true },
-    restartIdentity: true,
-  });
+    await queryInterface.bulkDelete("Courses", null, {
+      truncate: { cascade: true },
+      restartIdentity: true,
+    });
 
-  await queryInterface.bulkDelete("Categories", null, {
-    truncate: true,
-    cascade: true,
-    restartIdentity: true,
-  });
+    await queryInterface.bulkDelete("Categories", null, {
+      truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
 
-  await queryInterface.bulkDelete("Users", null, {
-    truncate: true,
-    cascade: true,
-    restartIdentity: true,
-  });
+    await queryInterface.bulkDelete("Users", null, {
+      truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
+  } catch (error) {
+    console.log(error, "<<< error after all");
+  }
 });
 
 describe("GET /enrollments", () => {

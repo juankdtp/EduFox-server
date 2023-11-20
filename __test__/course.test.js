@@ -25,16 +25,20 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await queryInterface.bulkDelete("Courses", null, {
-    truncate: { cascade: true },
-    restartIdentity: true,
-  });
+  try {
+    await queryInterface.bulkDelete("Courses", null, {
+      truncate: { cascade: true },
+      restartIdentity: true,
+    });
 
-  await queryInterface.bulkDelete("Categories", null, {
-    truncate: true,
-    cascade: true,
-    restartIdentity: true,
-  });
+    await queryInterface.bulkDelete("Categories", null, {
+      truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
+  } catch (err) {
+    console.log(err, "<<< afterAll course");
+  }
 });
 
 describe("GET /course", () => {

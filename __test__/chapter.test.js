@@ -5,43 +5,47 @@ const { hashPassword } = require("../helpers/bcrypt");
 const { queryInterface } = sequelize;
 
 beforeAll(async () => {
-  const userData = require("../data/user.json").map((user) => {
-    return {
-      // ...user,
-      email: user.email,
-      password: hashPassword(user.password),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-  });
-  await queryInterface.bulkInsert("Users", userData);
+  try {
+    const userData = require("../data/user.json").map((user) => {
+      return {
+        // ...user,
+        email: user.email,
+        password: hashPassword(user.password),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    });
+    await queryInterface.bulkInsert("Users", userData);
 
-  const typeCategory = require("../data/category.json").map((category) => {
-    return {
-      ...category,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-  });
-  await queryInterface.bulkInsert("Categories", typeCategory);
+    const typeCategory = require("../data/category.json").map((category) => {
+      return {
+        ...category,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    });
+    await queryInterface.bulkInsert("Categories", typeCategory);
 
-  const courseData = require("../data/course.json").map((course) => {
-    return {
-      ...course,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-  });
-  await queryInterface.bulkInsert("Courses", courseData);
+    const courseData = require("../data/course.json").map((course) => {
+      return {
+        ...course,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    });
+    await queryInterface.bulkInsert("Courses", courseData);
 
-  const chapterData = require("../data/chapter.json").map((chapter) => {
-    return {
-      ...chapter,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-  });
-  await queryInterface.bulkInsert("Chapters", chapterData);
+    const chapterData = require("../data/chapter.json").map((chapter) => {
+      return {
+        ...chapter,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    });
+    await queryInterface.bulkInsert("Chapters", chapterData);
+  } catch (err) {
+    console.log(err, "<<<< beforeAll chapter");
+  }
 });
 
 afterAll(async () => {
