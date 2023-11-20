@@ -15,7 +15,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   Feedback.init(
     {
-      rating: DataTypes.INTEGER,
+      rating: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "need feedback rating",
+          },
+          notNull: {
+            msg: "need feedback rating",
+          },
+          len: [0, 101],
+        },
+      },
       comment: DataTypes.STRING,
       CourseId: DataTypes.INTEGER,
       UserId: DataTypes.INTEGER,

@@ -9,14 +9,13 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn("Courses", "rating", {
-      type: Sequelize.FLOAT,
-      defaultValue: 0,
+    await queryInterface.addColumn("Courses", "description", {
+      type: Sequelize.STRING,
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn("Courses", "rating", {});
+    await queryInterface.removeColumn("Courses", "description", {});
     /**
      * Add reverting commands here.
      *
