@@ -5,6 +5,7 @@ const chapterRoute = require("./chapterRoute");
 const categoriesRoute = require("./categoriesRoute");
 const transactionRoute = require("./transactionRoute");
 const feedbackRoute = require("./feedbackRoute");
+const userRoute = require("./userRoute");
 const LoginController = require("../controllers/loginController");
 const RegisterController = require("../controllers/registerController");
 
@@ -17,5 +18,6 @@ router.use("/chapter", chapterRoute);
 router.use("/categories", categoriesRoute);
 router.use("/transaction", transactionRoute);
 router.use("/feedback", feedbackRoute);
+router.use("/user", userRoute);
 
 module.exports = router;
