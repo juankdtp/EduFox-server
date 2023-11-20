@@ -7,6 +7,10 @@ class TransactionController {
     const { userId, userUsername, userEmail, userPoint, userProfilePict } =
       req.user;
     try {
+      const user = await User.findByPk(userId);
+      // if (!user) {
+      //   throw new Error("USER_NOT_FOUND");
+      // }
       const result = await User.update(
         {
           isPremium: true,
@@ -29,8 +33,8 @@ class TransactionController {
 
       const token = tokenCreate(sendTokenPayload);
 
-      res.status(200).json({
-        statusCode: 200,
+      res.status(201).json({
+        statusCode: 201,
         access_token: token,
         message: `user with id ${userId} has become premium`,
       });
@@ -43,9 +47,9 @@ class TransactionController {
     const { userId, userEmail } = req.user;
     try {
       const user = await User.findByPk(userId);
-      if (!user) {
-        throw new Error("DATA_NOT_FOUND");
-      }
+      // if (!user) {
+      //   throw new Error("USER_NOT_FOUND");
+      // }
       let snap = new midtransClient.Snap({
         isProduction: false,
         serverKey: process.env.MIDTRANS_SERVER_KEY,

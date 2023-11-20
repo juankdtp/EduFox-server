@@ -18,6 +18,11 @@ const errorHandler = (err, req, res, next) => {
     (statusCode = 401), (message = "Invalid token");
   }
 
+  if (err.message === "DONT_AUTHORIZED") {
+    statusCode = 403;
+    message = "You dont have the authorize";
+  }
+
   if (err.message === "DATA_NOT_FOUND") {
     (statusCode = 404), (message = "Data not found");
   }

@@ -5,8 +5,8 @@ class CategoryController {
     try {
       const result = await Category.findAll();
 
-      res.status(201).json({
-        statusCode: 201,
+      res.status(200).json({
+        statusCode: 200,
         data: result,
       });
     } catch (err) {
