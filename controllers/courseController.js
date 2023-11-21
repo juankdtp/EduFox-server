@@ -1,13 +1,12 @@
 const { Op } = require("sequelize");
-const { Course, Chapter } = require("../models/index");
+const { Course, Chapter, Feedback, Category } = require("../models");
 
 class CourseController {
   static async getAllCourse(req, res, next) {
     const { page, name, categoryId } = req.query;
-    let findName = "";
-
-    let limitPage = 8;
-    let pageStartPoint = 0;
+    const limitPage = 8;
+    const findName = name ? name : "";
+    const pageStartPoint = page ? limitPage * (page - 1) : 0;
 
     const filterOptions = {
       name: {
@@ -15,16 +14,8 @@ class CourseController {
       },
     };
 
-    if (name) {
-      findName = name;
-    }
-
-    if (page) {
-      pageStartPoint = limitPage * (page - 1);
-    }
-
     if (categoryId) {
-      filterOptions.CategoryId = categoryId;
+      filterOptions.CategoryId = categoryId.split(",");
     }
 
     try {
@@ -33,6 +24,7 @@ class CourseController {
         limit: limitPage,
         offset: pageStartPoint,
         order: [["name", "ASC"]],
+        include: [Category, Feedback]
       });
 
       res.status(200).json({
@@ -51,11 +43,15 @@ class CourseController {
     const { courseId } = req.params;
     try {
       const result = await Course.findByPk(courseId, {
-        include: {
-          model: Chapter,
-          // sort by chapterNo, ASC
-          order: [["chapterNo", "ASC"]],
-        },
+        include: [
+          {
+            model: Chapter,
+            // sort by chapterNo, ASC
+            order: [["chapterNo", "ASC"]],
+          },
+          Feedback,
+          Category
+        ],
       });
       console.log(result);
       res.status(201).json({

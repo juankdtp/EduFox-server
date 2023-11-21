@@ -3,6 +3,7 @@ const course = require("../data/course.json");
 course.forEach((el) => {
   el.updatedAt = el.createdAt = new Date();
 });
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {

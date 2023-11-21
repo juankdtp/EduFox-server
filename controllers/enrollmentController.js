@@ -8,23 +8,24 @@ class EnrollmentController {
     const { page, name } = req.query;
     // let findName = "";
 
-    let limitPage = 4;
-    let pageStartPoint = 0;
+    const limitPage = 4;
+    const pageStartPoint = page ? limitPage * (page - 1) : 0;
 
     // if (name) {
     //   findName = name;
     // }
 
-    if (page) {
-      pageStartPoint = limitPage * (page - 1);
-    }
+    // if (page) {
+    //   pageStartPoint = limitPage * (page - 1);
+    // }
     try {
       const result = await Enrollment.findAndCountAll({
         where: {
           UserId: userId,
-          //   name: {
-          //     [Op.iLike]: `%${findName}%`,
-          //   },
+          name: {
+            [Op.iLike]: `%${name ? name : ""}%`,
+          },
+          include: Course
         },
         limit: limitPage,
         offset: pageStartPoint,
@@ -35,7 +36,10 @@ class EnrollmentController {
 
       res.status(201).json({
         statusCode: 201,
-        data: result,
+        currentPage: page || 1,
+        data: result.rows,
+        totalData: result.count,
+        totalPage: Math.ceil(result.count / limitPage),
       });
     } catch (err) {
       console.log(err);

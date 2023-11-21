@@ -4,13 +4,13 @@ const { User } = require("../models/index");
 
 class LoginController {
   static async userLogin(req, res, next) {
-    const { email, password } = req.body;
+    const { email, username, password } = req.body;
+
+    const authenticator = email ? { email } : { username }
 
     try {
       const foundUser = await User.findOne({
-        where: {
-          email,
-        },
+        where: authenticator,
       });
 
       if (!foundUser) {
@@ -34,17 +34,18 @@ class LoginController {
 
       res.status(200).json({
         statusCode: 200,
-        data: {
-          access_token: token,
-          userUsername: foundUser.username,
-          userEmail: foundUser.email,
-          userPremium: foundUser.isPremium,
-          userPoint: foundUser.point,
-          userProfilePict: foundUser.profilePicture,
-        },
+        access_token: token
+        // data: {
+        //   access_token: token,
+        //   userUsername: foundUser.username,
+        //   userEmail: foundUser.email,
+        //   userPremium: foundUser.isPremium,
+        //   userPoint: foundUser.point,
+        //   userProfilePict: foundUser.profilePicture,
+        // },
       });
     } catch (err) {
-      // console.log(err);
+      console.log(err, 49);
       next(err);
     }
   }
