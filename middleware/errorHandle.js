@@ -1,4 +1,5 @@
 const errorHandler = (err, req, res, next) => {
+  console.log(err);
   let statusCode = 500;
   let message = "Internal server error";
 
@@ -16,6 +17,11 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.message === "TOKEN_INVALID") {
     (statusCode = 401), (message = "Invalid token");
+  }
+
+  if (err.message === "DONT_AUTHORIZED") {
+    statusCode = 403;
+    message = "You dont have the authorize";
   }
 
   if (err.message === "DATA_NOT_FOUND") {

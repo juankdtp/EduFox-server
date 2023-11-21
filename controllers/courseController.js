@@ -53,9 +53,12 @@ class CourseController {
           Category
         ],
       });
-      console.log(result);
-      res.status(201).json({
-        statusCode: 201,
+      if (!result) {
+        throw new Error("DATA_NOT_FOUND");
+      }
+      // console.log(result);
+      res.status(200).json({
+        statusCode: 200,
         data: result,
       });
     } catch (err) {

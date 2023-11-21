@@ -22,7 +22,7 @@ class FeedbackController {
       const user = await User.findByPk(userId);
       // console.log(user, 23);
       const userPoint = user.point;
-      console.log(userPoint, 25);
+      // console.log(userPoint, 25);
       //   console.log(feedback.count, 21);
       //   console.log(feedback.rows, 22);
       // console.log(course.rows, 23);

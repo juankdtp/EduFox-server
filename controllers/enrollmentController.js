@@ -42,7 +42,7 @@ class EnrollmentController {
         totalPage: Math.ceil(result.count / limitPage),
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       next(err);
     }
   }
@@ -74,10 +74,14 @@ class EnrollmentController {
         },
       });
 
+      if (!result) {
+        throw new Error("DATA_NOT_FOUND");
+      }
+
       //   console.log(result);
 
-      res.status(201).json({
-        statusCode: 201,
+      res.status(200).json({
+        statusCode: 200,
         data: result,
       });
     } catch (err) {
@@ -96,7 +100,7 @@ class EnrollmentController {
       //   console.log(checkUser.isPremium, 39);
       //   console.log(checkCourse.isPremium, 40);
       if (checkCourse.isPremium === true && userPremium === false) {
-        throw new Error("USER_NOT_PREMIUM");
+        throw new Error("DONT_AUTHORIZED");
       }
       const findEnroll = await Enrollment.findOne({
         where: {
@@ -108,7 +112,7 @@ class EnrollmentController {
       //   console.log(findEnroll);
 
       if (findEnroll) {
-        throw new Error("ENROLLMENT_EXIST");
+        throw new Error("DONT_AUTHORIZED");
       }
 
       const findChapter = await Chapter.findOne({
@@ -126,7 +130,7 @@ class EnrollmentController {
         curChapterId: findChapter.id,
       });
 
-      res.status(200).json({
+      res.status(201).json({
         statusCode: 201,
         data: result,
       });
@@ -149,7 +153,7 @@ class EnrollmentController {
       });
 
       if (!checkEnroll) {
-        throw new Error("NO_ENROLLMENT");
+        throw new Error("DATA_NOT_FOUND");
       }
 
       const result = await Enrollment.update(
