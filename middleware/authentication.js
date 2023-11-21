@@ -35,7 +35,7 @@ const authentication = async (req, res, next) => {
       userUsername: user.username,
       userEmail,
       userPremium: user.isPremium,
-      userPoint: user,
+      userPoint: user.point,
       userProfilePict,
     };
 

@@ -1,4 +1,5 @@
 const cloudinary = require("../helpers/cloudinary");
+const { tokenCreate } = require("../helpers/jwt");
 const { User } = require("../models/index");
 
 class UserController {
@@ -15,16 +16,33 @@ class UserController {
           });
         }
 
+        const foundUser = await User.findByPk(userId);
+        console.log(foundUser, 19);
+
+        const sendTokenPayload = {
+          userId: foundUser.id,
+          userUsername: foundUser.username,
+          userEmail: foundUser.email,
+          userPremium: foundUser.isPremium,
+          userPoint: foundUser.point,
+          userProfilePict: result.url,
+        };
+        console.log(sendTokenPayload, 29);
+
+        const token = tokenCreate(sendTokenPayload);
+        console.log(token, 33);
+
         const data = await User.update(
           {
             profilePicture: result.url,
           },
           { where: { id: userId } }
         );
-        console.log(data, 22);
+        // console.log(data, 22);
 
         res.status(200).json({
-          data,
+          statusCode: 200,
+          access_token: token,
         });
       });
     } catch (error) {
