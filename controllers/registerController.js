@@ -2,13 +2,12 @@ const { User } = require("../models/index");
 
 class RegisterController {
   static async userRegister(req, res, next) {
-    const { username, email, password, profilePicture } = req.body;
+    const { username, email, password } = req.body;
     try {
       const result = await User.create({
         username,
         email,
         password,
-        profilePicture,
       });
 
       const userData = {

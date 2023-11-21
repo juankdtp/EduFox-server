@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       isPremium: DataTypes.BOOLEAN,
       imgUrl: DataTypes.STRING,
       rating: DataTypes.FLOAT,
+      description: DataTypes.TEXT,
     },
     {
       sequelize,
