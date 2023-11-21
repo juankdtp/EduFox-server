@@ -1,6 +1,7 @@
+const { User } = require("../models/index");
 const { tokenVerification } = require("../helpers/jwt");
 
-const authentication = (req, res, next) => {
+const authentication = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
     if (!access_token) {
@@ -19,13 +20,22 @@ const authentication = (req, res, next) => {
     } = verified;
 
     // findOne User bahwa user tersebut memang ada dari database
+    const user = await User.findOne({
+      where: {
+        email: userEmail,
+      },
+    });
+
+    if (!user) {
+      throw new Error("USER_NOT_FOUND");
+    }
 
     req.user = {
       userId,
-      userUsername,
+      userUsername: user.username,
       userEmail,
-      userPremium,
-      userPoint,
+      userPremium: user.isPremium,
+      userPoint: user.point,
       userProfilePict,
     };
 
