@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Course, Chapter, Feedback, Category } = require("../models");
+const { Course, Chapter, Feedback, Category, User } = require("../models");
 
 class CourseController {
   static async getAllCourse(req, res, next) {
@@ -49,7 +49,15 @@ class CourseController {
             // sort by chapterNo, ASC
             order: [["chapterNo", "ASC"]],
           },
-          Feedback,
+          {
+            model: Feedback,
+            limit: 4,
+            include: {
+              model: User,
+              attributes: ["username", "profilePicture"]
+            },
+            order: [["updatedAt", "DESC"]]
+          },
           Category
         ],
       });

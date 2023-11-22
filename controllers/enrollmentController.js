@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Enrollment, Course, Chapter, User, Category } = require("../models/index");
+const { Enrollment, Course, Chapter, Category } = require("../models/index");
 const enrollment = require("../models/enrollment");
 
 class EnrollmentController {
@@ -32,16 +32,18 @@ class EnrollmentController {
             Chapter
           ]
         }, Chapter],
-        order: [["createdAt", "DESC"]], // createdAt DESC
+        order: [["updatedAt", "DESC"]], // createdAt DESC
       });
       //   const result = await Enrollment.findAll();
+
+      const totalData = result.count / 3
 
       res.status(201).json({
         statusCode: 201,
         currentPage: page || 1,
         data: result.rows,
-        totalData: result.count,
-        totalPage: Math.ceil(result.count / limitPage),
+        totalData,
+        totalPage: Math.ceil(totalData / limitPage),
       });
     } catch (err) {
       // console.log(err);
@@ -95,10 +97,12 @@ class EnrollmentController {
     const { courseId } = req.params;
     const { userId, userPremium } = req.user;
     try {
+      console.log(courseId)
+
       // const checkUser = await User.findByPk(userId); // ini dari auth
       const checkCourse = await Course.findByPk(courseId);
       //   console.log(checkUser, 37);
-      //   console.log(checkCourse, 38);
+      // console.log(checkCourse, 38);
       //   console.log(checkUser.isPremium, 39);
       //   console.log(checkCourse.isPremium, 40);
       if (checkCourse.isPremium === true && userPremium === false) {
@@ -111,7 +115,7 @@ class EnrollmentController {
         },
       });
 
-      //   console.log(findEnroll);
+      // console.log(findEnroll);
 
       if (findEnroll) {
         throw new Error("DONT_AUTHORIZED");
@@ -123,8 +127,8 @@ class EnrollmentController {
           chapterNo: 1,
         },
       });
-      //   console.log(findChapter);
-      //   console.log(findChapter.id, 42);
+      // console.log(findChapter);
+      // console.log(findChapter.id, 42);
 
       const result = await Enrollment.create({
         UserId: userId,
