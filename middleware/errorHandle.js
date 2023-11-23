@@ -12,11 +12,13 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (err.message === "USER_NOT_FOUND" || err.message === "PASSWORD_INVALID") {
-    (statusCode = 401), (message = "Email or Password Invalid");
+    statusCode = 401;
+    message = "Email or Password Invalid"
   }
 
   if (err.message === "TOKEN_INVALID") {
-    (statusCode = 401), (message = "Invalid token");
+    statusCode = 401;
+    message = "Invalid token"
   }
 
   if (err.message === "DONT_AUTHORIZED") {
@@ -25,7 +27,13 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (err.message === "DATA_NOT_FOUND") {
-    (statusCode = 404), (message = "Data not found");
+    statusCode = 404
+    message = "Data not found"
+  }
+
+  if (err.message === "ALREADY_EXISTS") {
+    statusCode = 409
+    message = "You are currently taking this course"
   }
 
   res.status(statusCode).json({

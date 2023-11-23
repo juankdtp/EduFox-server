@@ -174,15 +174,15 @@ class FeedbackController {
 
         transaction.commit()
 
-        res.status(200).json({
-          statusCode: 200,
+        res.status(201).json({
+          statusCode: 201,
           access_token
           // data: createFeedback,
         });
       }
     } catch (err) {
       await transaction.rollback()
-      console.log(err);
+      // console.log(err);
       next(err);
     }
   }

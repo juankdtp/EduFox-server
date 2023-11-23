@@ -118,7 +118,7 @@ class EnrollmentController {
       // console.log(findEnroll);
 
       if (findEnroll) {
-        throw new Error("DONT_AUTHORIZED");
+        throw new Error("ALREADY_EXISTS");
       }
 
       const findChapter = await Chapter.findOne({

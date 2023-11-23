@@ -20,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "need feedback rating",
+            msg: "Rating is required",
           },
           notNull: {
-            msg: "need feedback rating",
+            msg: "Rating is required",
           },
           len: [0, 101],
         },
