@@ -6,15 +6,17 @@ class LoginController {
   static async userLogin(req, res, next) {
     const { email, username, password } = req.body;
 
+
     const authenticator = email ? { email } : { username }
 
     try {
+      if (!(email || username) || !password) throw new Error("EMPTY_INPUT")
       const foundUser = await User.findOne({
         where: authenticator,
       });
 
       if (!foundUser) {
-        throw new Error("USER_NOT_FOUND");
+        throw new Error("");
       }
 
       if (!plaintextAndPasswordCompare(password, foundUser.password)) {
